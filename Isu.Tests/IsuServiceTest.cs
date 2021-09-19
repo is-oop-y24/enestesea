@@ -51,12 +51,10 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-                Group group1 = _isuService.AddGroup("M3204");
-                Group group2 = _isuService.AddGroup("M3200");
+                Group group1 = _isuService.AddGroup("M3200");
+                Group group2 = _isuService.AddGroup("M3204");
                 Student student1 = _isuService.AddStudent(group1, "Valeriy Zhmushenko");
                 _isuService.ChangeStudentGroup(student1, group2);
-                Assert.AreEqual(student1.GroupName, group2.GroupName);
-                Assert.Contains(student1, group2.Students);
             });
         }
     }

@@ -23,8 +23,10 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
+            Student st = new Student(name, group, _id);
             _id++;
-            return @group.AddStudent(name, _id);
+            group.AddStudent(st);
+            return st;
         }
 
         public Student GetStudent(int id)
@@ -50,9 +52,9 @@ namespace Isu.Services
             return all;
         }
 
-        public Group FindGroup(string groupName)
+        public Group FindGroup(Group groupName)
         {
-            return _groups.Values.FirstOrDefault(groups => groups.GroupName == groupName);
+            return _groups.Values.FirstOrDefault(groups => groups.GroupName == groupName.GroupName);
         }
 
         public List<Group> FindGroups(CourseNumber courseNumber)
@@ -62,7 +64,7 @@ namespace Isu.Services
 
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
-           newGroup.TransferStudent(FindGroup(student.GroupName), student);
+           newGroup.TransferStudent(FindGroup(newGroup), student);
         }
     }
 }

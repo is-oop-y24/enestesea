@@ -7,19 +7,19 @@ namespace Isu.Entities
     {
         private int _number;
         public CourseNumber(int number)
-            {
-                Number = number;
-            }
+        {
+            Number = number;
+        }
 
         public int Number
+        {
+            get => _number;
+            private set
             {
-                get => _number;
-                private set
-                {
-                    if (Number is > 5 or < 1)
-                        throw new IsuException("Invalid number of course");
-                    _number = value;
-                }
+                if (Number is > 5 or < 1)
+                    throw new InvalidNumberOfCourseException("Invalid number of course");
+                _number = value;
             }
+        }
     }
 }

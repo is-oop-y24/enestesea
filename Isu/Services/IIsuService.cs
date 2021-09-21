@@ -12,7 +12,7 @@ namespace Isu.Services
         List<Student> FindStudents(string groupName);
         List<Student> FindStudents(CourseNumber courseNumber);
 
-        Group FindGroup(string groupName);
+        Group FindGroup(Group groupName);
         List<Group> FindGroups(CourseNumber courseNumber);
 
         void ChangeStudentGroup(Student student, Group newGroup);

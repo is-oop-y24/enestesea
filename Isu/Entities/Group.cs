@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Isu.Tools;
@@ -24,27 +25,27 @@ namespace Isu.Entities
             get => _groupName;
             private set
             {
-                if (!value.StartsWith("M3"))
-                    throw new IsuException("Invalid name of group");
+                if (!value.StartsWith("M3") || value.Length != 5 ||
+                    char.IsLetter(value[2]) || char.IsLetter(value[3]) || char.IsLetter(value[4]))
+                throw new InvalidNameOfGroupException("Invalid name of group");
                 _groupName = value;
             }
         }
 
-        public Student AddStudent(string name, int id)
+        public void AddStudent(Student student)
         {
-            if (Students.Count == _maxNumberOfStudents)
-                throw new IsuException("Group is full, can't add more students");
-            Students.Add(new Student(name, _groupName, id));
-            return Students.Last();
+            if (Students.Count >= _maxNumberOfStudents)
+                throw new GroupIsOvercrowdedException("Group is full, can't add more students");
+            Students.Add(student);
         }
 
-        public void TransferStudent(Group oldGroup, Student student)
+        public void TransferStudent(Group newGroup, Student student)
         {
-            if (Students.Count == _maxNumberOfStudents)
-                throw new IsuException("Group is full, can't add more students");
-            oldGroup.Students.Remove(student);
+            if (Students.Count >= _maxNumberOfStudents)
+                throw new GroupIsOvercrowdedException("Group is full, can't add more students");
+            student.NameOfGroup.Students.Remove(student);
             Students.Add(student);
-            student.Transfer(GroupName);
+            student.Transfer(newGroup);
         }
     }
 }

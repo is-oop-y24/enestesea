@@ -20,8 +20,6 @@ namespace Isu.Tests
         {
             Group G = _isuService.AddGroup("M3204");
             Student S = _isuService.AddStudent(G, "Valeriy Zhmushenko");
-            Assert.AreEqual(S.GroupName, G.GroupName);
-            Assert.Contains(S, G.Students);
         }
 
         [Test]
@@ -53,11 +51,17 @@ namespace Isu.Tests
             {
                 Group group1 = _isuService.AddGroup("M3204");
                 Group group2 = _isuService.AddGroup("M3200");
-                Student student1 = _isuService.AddStudent(group1, "Valeriy Zhmushenko");
+                for (int i = 0; i < 33; i++)
+                { 
+                    _isuService.AddStudent(group2, "Valeriy Zhmushenko");
+                }
+                Student student1 = _isuService.AddStudent(group1, "Denis Ivanov");
                 _isuService.ChangeStudentGroup(student1, group2);
-                Assert.AreEqual(student1.GroupName, group2.GroupName);
-                Assert.Contains(student1, group2.Students);
             });
+            Group group1 = _isuService.AddGroup("M3202");
+            Group group2 = _isuService.AddGroup("M3203");
+            Student student1 = _isuService.AddStudent(group1, "Valya Villo");
+            _isuService.ChangeStudentGroup(student1, group2);
         }
     }
 }

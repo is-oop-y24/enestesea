@@ -20,7 +20,7 @@ namespace Isu.Tests
         {
             Group G = _isuService.AddGroup("M3204");
             Student S = _isuService.AddStudent(G, "Valeriy Zhmushenko");
-            Assert.AreEqual(S.NameOfGroup.GroupName, G.GroupName);
+            Assert.AreEqual(S.GroupName, G.GroupName);
             Assert.Contains(S, G.Students);
         }
 
@@ -30,9 +30,9 @@ namespace Isu.Tests
             Assert.Catch<IsuException>(() =>
             {
                 Group G = _isuService.AddGroup("M3204");
-                for (int i = 0; i < 100; i++)
-                {
-                    _isuService.AddStudent(G,"Valeriy Zhmushenko");
+                for (int i = 0; i < 33; i++)
+                { 
+                    _isuService.AddStudent(G, "Valeriy Zhmushenko");
                 }
             });
         }
@@ -42,7 +42,7 @@ namespace Isu.Tests
         {
             Assert.Catch<IsuException>(() =>
             {
-                Group G = _isuService.AddGroup("M32kekl");
+                Group G = _isuService.AddGroup("M2345");
             });
         }
 
@@ -53,20 +53,11 @@ namespace Isu.Tests
             {
                 Group group1 = _isuService.AddGroup("M3204");
                 Group group2 = _isuService.AddGroup("M3200");
-                for (int i = 0; i < 33; i++)
-                {
-                    _isuService.AddStudent(group2, "Valeriy Zhmushenko");
-                }
-
-                Student student1 = _isuService.AddStudent(group1, "Denis Ivanov");
+                Student student1 = _isuService.AddStudent(group1, "Valeriy Zhmushenko");
                 _isuService.ChangeStudentGroup(student1, group2);
+                Assert.AreEqual(student1.GroupName, group2.GroupName);
+                Assert.Contains(student1, group2.Students);
             });
-            Group group1 = _isuService.AddGroup("M3202");
-            Group group2 = _isuService.AddGroup("M3203");
-            Student student1 = _isuService.AddStudent(group1, "Valya Villo");
-            _isuService.ChangeStudentGroup(student1, group2);
-            Assert.AreEqual(student1.NameOfGroup.GroupName, group2.GroupName);
-            Assert.Contains(student1, group2.Students);
         }
     }
 }

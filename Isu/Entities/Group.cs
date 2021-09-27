@@ -27,7 +27,7 @@ namespace Isu.Entities
             {
                 if (!value.StartsWith("M3") || value.Length != 5 ||
                     char.IsLetter(value[2]) || char.IsLetter(value[3]) || char.IsLetter(value[4]))
-                throw new InvalidNameOfGroupException("Invalid name of group");
+                    throw new InvalidNameOfGroupException("Invalid name of group");
                 _groupName = value;
             }
         }

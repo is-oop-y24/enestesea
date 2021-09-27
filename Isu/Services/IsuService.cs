@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Isu.Entities;
+using Isu.Tools;
 
 namespace Isu.Services
 {
@@ -23,15 +24,20 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
-            Student st = new Student(name, group, _id);
-            _id++;
+            Student st = new Student(name, group, _id++);
             group.AddStudent(st);
             return st;
         }
 
         public Student GetStudent(int id)
         {
-            return _groups.Values.SelectMany(groups => groups.Students).FirstOrDefault(student => student.Id == id);
+            foreach (Group group in _groups.Values)
+            {
+                foreach (Student student in @group.Students)
+                if (student.Id == id) return student;
+            }
+
+            throw new NoSuchStudentException("There is no student with sich Id");
         }
 
         public Student FindStudent(string name)
@@ -41,7 +47,12 @@ namespace Isu.Services
 
         public List<Student> FindStudents(string groupName)
         {
-            return (from groups in _groups.Values where groups.GroupName == groupName select groups.Students).FirstOrDefault();
+            foreach (Group group in _groups.Values)
+            {
+                if (group.GroupName == groupName) return group.Students;
+            }
+
+            return null;
         }
 
         public List<Student> FindStudents(CourseNumber courseNumber)

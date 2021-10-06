@@ -49,7 +49,7 @@ namespace Isu.Services
         {
             foreach (Group group in _groups.Values)
             {
-                if (group.GroupName == groupName) return group.Students;
+                if (group.GroupName == groupName) return (List<Student>)@group.Students;
             }
 
             return null;
@@ -70,7 +70,7 @@ namespace Isu.Services
 
         public List<Group> FindGroups(CourseNumber courseNumber)
         {
-            return _groups.Values.Where(groups => Convert.ToInt32(groups.GroupName[2]) == courseNumber.Number).ToList();
+            return _groups.Values.Where(groups => groups.NumberOfCourse == courseNumber.Number).ToList();
         }
 
         public void ChangeStudentGroup(Student student, Group newGroup)

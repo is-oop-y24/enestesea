@@ -4,35 +4,35 @@ namespace Isu.Entities
 {
     public class Student : IEquatable<Student>
     {
-        private Group _nameOfGroup = null;
-        public Student(string name, Group nameOfGroup, int id)
+        private Group _group = null;
+        public Student(string name, Group @group, int id)
         {
             Id = id;
             Name = name;
-            NameOfGroup = nameOfGroup;
+            Group = @group;
         }
 
         public int Id { get; }
         public string Name { get; }
-        public Group NameOfGroup
+        public Group Group
         {
-            get => _nameOfGroup;
+            get => _group;
             set
             {
-                _nameOfGroup = value;
+                _group = value;
             }
         }
 
         public void Transfer(Group newGroup)
         {
-            NameOfGroup = newGroup;
+            Group = newGroup;
         }
 
         public bool Equals(Student other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Id == other.Id && Name == other.Name && NameOfGroup == other.NameOfGroup;
+            return Id == other.Id && Name == other.Name && Group == other.Group;
         }
 
         public override bool Equals(object obj)
@@ -45,7 +45,7 @@ namespace Isu.Entities
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Name, NameOfGroup);
+            return HashCode.Combine(Id, Name, Group);
         }
     }
 }

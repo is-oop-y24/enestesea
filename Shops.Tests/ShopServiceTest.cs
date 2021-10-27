@@ -28,12 +28,12 @@ namespace Shops.Tests
         }
         [Test]
         public void BuyNoProduct_ThrowException()
-        {
-            Assert.Catch<ShopException>(() =>
-            {
-                Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26");
-                Product pr = _shopManager.RegisterProduct("Батон");
-                Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 1)});
+        { 
+            Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26"); 
+            Product pr = _shopManager.RegisterProduct("Батон");
+            Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 1)});
+            Assert.Catch<ShopException>(() => 
+            { 
                 _shopManager.BuyProduct(sh, cust.ShoppingList[0], cust);
             });
         }
@@ -41,33 +41,35 @@ namespace Shops.Tests
         
         [Test]
         public void BuyTooMany_ThrowException()
-        {
+        { 
+            Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26");
+            Product pr = _shopManager.RegisterProduct("Батон");
+            Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 1)});
             Assert.Catch<ShopException>(() =>
-            {    
-                Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26");
-                Product pr = _shopManager.RegisterProduct("Батон");
-                Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 1)});
+            { 
                 _shopManager.BuyProduct(sh, cust.ShoppingList[0], cust);
-                _shopManager.AddProduct(pr, 10, 5, sh);
-                List<CustomerProduct> shoppingList = new List<CustomerProduct> {new CustomerProduct(pr, 25)};
-                Customer cust2 = new Customer("Ваня", 100, shoppingList);
+            });
+            _shopManager.AddProduct(pr, 10, 5, sh); 
+            List<CustomerProduct> shoppingList = new List<CustomerProduct> {new CustomerProduct(pr, 25)}; 
+            Customer cust2 = new Customer("Ваня", 100, shoppingList);
+            Assert.Catch<ShopException>(() =>
+            { 
                 sh.BuyProduct(shoppingList[0], cust2);
             });
         }
         
         [Test]
         public void BuyTooManySoNoMoney_ThrowException()
-        {
+        { 
+            Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26");
+            Product pr = _shopManager.RegisterProduct("Батон");
+            Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 10)});
+            _shopManager.AddProduct(pr, 10, 5, sh);
+            _shopManager.ChangeProductPriceInShop(sh, pr,1000);
             Assert.Catch<ShopException>(() =>
             {
-                Shop sh = _shopManager.RegisterShop("Пятера", "улица Г д26");
-                Product pr = _shopManager.RegisterProduct("Батон");
-                Customer cust = new Customer("Петя", 100, new List<CustomerProduct> {new CustomerProduct(pr, 10)});
-               _shopManager.AddProduct(pr, 10, 5, sh);
-               _shopManager.ChangeProductPriceInShop(sh, pr,1000);
-               sh.BuyProduct(cust.ShoppingList[0], cust);
+                sh.BuyProduct(cust.ShoppingList[0], cust);
             });
-            
         }
         
         [Test]
@@ -79,12 +81,13 @@ namespace Shops.Tests
             _shopManager.RegisterShop("А", "4");
             _shopManager.RegisterShop("З", "5");
             Product p1 = _shopManager.RegisterProduct("х1");
-            var shopP1 = new ShopProduct(p1, 50, 10);
+            var shopP1 = new ShopProduct(p1, 50, 100);
             Product p2 = _shopManager.RegisterProduct("х1");
-            var shopP2 = new ShopProduct(p2, 55, 10);
+            var shopP2 = new ShopProduct(p2, 55, 100);
             _shopManager.AddProduct(shopP1, s2);
             _shopManager.AddProduct(shopP2, s1);
-            Assert.AreEqual(_shopManager.FindShopWithBestPrice(new List<CustomerProduct>{new CustomerProduct(p2, 10)}), s1);
-            }
+            Shop shop = _shopManager.FindShopWithBestPrice(new List<CustomerProduct> {new CustomerProduct(p2, 10)});
+            Assert.AreEqual(shop, s2);
+        }
     }
 }

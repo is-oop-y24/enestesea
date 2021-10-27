@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Shops.Entities;
 using Shops.Tools;
 namespace Shops.Services
@@ -17,13 +18,17 @@ namespace Shops.Services
         public Shop RegisterShop(string name, string address)
         {
             Guid id = Guid.NewGuid();
-            return _shops[id] = new Shop(name, address, id);
+            var shop = new Shop(name, address, id);
+            _shops.Add(id, shop);
+            return shop;
         }
 
         public Product RegisterProduct(string name)
         {
             Guid id = Guid.NewGuid();
-            return _products[id] = new Product(name, id);
+            var product = new Product(name, id);
+            _products.Add(id, product);
+            return product;
         }
 
         public ShopProduct AddProduct(Product product, int price, int amount, Shop shop)
@@ -55,49 +60,48 @@ namespace Shops.Services
 
         public List<ShopProduct> AllProducts(Shop shop)
         {
-            return shop.ShopProducts;
+            return shop.GetShopProducts();
         }
 
         public void Delivery(Shop shop, List<ShopProduct> products)
         {
             foreach (ShopProduct product in products)
             {
-                if (shop.ShopProducts.Contains(product))
+                if (shop.GetShopProducts().Contains(product))
                 {
                     ShopProduct p = shop.FindShopProductInList(product);
                     p.ShopProductAmount += product.ShopProductAmount;
                 }
                 else
                 {
-                    shop.ShopProducts.Add(product);
+                    shop.AddProduct(product);
                 }
             }
         }
 
         public Shop FindShopWithBestPrice(List<CustomerProduct> listOfProducts)
         {
-            int bestPrice = int.MaxValue;
+            int bestPrice = 0;
             Shop cheapShop = null;
             foreach (Shop newShop in _shops.Values)
             {
                 int price = 0;
-                foreach (CustomerProduct customerProduct in listOfProducts)
+                foreach (int? productPrice in listOfProducts.Select(customerProduct => newShop.PriceForCustomerProduct(customerProduct)))
                 {
-                    int productPrice = newShop.PriceForCustomerProduct(customerProduct);
                     if (productPrice == int.MaxValue)
                     {
                         price = int.MaxValue;
                         break;
                     }
 
-                    price += productPrice;
+                    if (productPrice != null) price += productPrice.Value;
                 }
 
-                if (price < bestPrice)
-                {
+                if (bestPrice == 0)
                     bestPrice = price;
-                    cheapShop = newShop;
-                }
+                if (price >= bestPrice) continue;
+                bestPrice = price;
+                cheapShop = newShop;
             }
 
             if (bestPrice == int.MaxValue)

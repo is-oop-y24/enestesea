@@ -6,22 +6,22 @@ namespace Shops.Entities
 {
     public class Shop : IEquatable<Shop>
     {
+        private List<ShopProduct> _shopProducts;
         public Shop(string name, string address, Guid id)
         {
             ShopName = name;
             ShopId = id;
             ShopAddress = address;
-            ShopProducts = new List<ShopProduct>();
+            _shopProducts = new List<ShopProduct>();
         }
 
         public string ShopName { get; }
         public Guid ShopId { get; }
         public string ShopAddress { get; }
-        public List<ShopProduct> ShopProducts { get;  }
 
         public void AddProduct(ShopProduct shopProduct)
         {
-            if (ShopProducts.Contains(shopProduct))
+            if (_shopProducts.Contains(shopProduct))
             {
                 ShopProduct p = FindShopProductInList(shopProduct);
                 p.ShopProductAmount += shopProduct.ShopProductAmount;
@@ -29,8 +29,13 @@ namespace Shops.Entities
             }
             else
             {
-                ShopProducts.Add(shopProduct);
+                _shopProducts.Add(shopProduct);
             }
+        }
+
+        public List<ShopProduct> GetShopProducts()
+        {
+            return _shopProducts.ToList();
         }
 
         public void ChangePrice(Product product, int value)
@@ -39,46 +44,48 @@ namespace Shops.Entities
             p.ShopProductPrice = value;
         }
 
-        public int PriceForCustomerProduct(CustomerProduct customerProduct)
+        public int? PriceForCustomerProduct(CustomerProduct customerProduct)
         {
             try
             {
                 ShopProduct currentProduct = FindShopProductInList(customerProduct);
                 if (currentProduct.ShopProductAmount < customerProduct.CustomerProductAmount)
-                    return int.MaxValue;
+                    return null;
                 return customerProduct.CustomerProductAmount * currentProduct.ShopProductPrice;
             }
             catch
             {
-                return int.MaxValue;
+                return null;
             }
         }
 
         public void BuyProduct(CustomerProduct product, Customer customer)
         {
-            int productPrice = PriceForCustomerProduct(product);
-            if (productPrice == int.MaxValue)
+            int? productPrice = PriceForCustomerProduct(product);
+            if (productPrice == null)
                 throw new LackOfProductException("Sorry, there is not enough products in this shop");
             if (productPrice > customer.Money)
                 throw new LackOfMoneyException("Sorry, you don't have enough money to buy it");
-            customer.Money -= productPrice;
+            customer.Money -= productPrice.Value;
             RemoveProductFromShop(product);
         }
 
         public void BuyAllShoppingList(List<CustomerProduct> shoppingList, Customer customer)
         {
-            int total = 0;
+            if (customer == null)
+                throw new ShopException("penis");
+            int? total = 0;
             foreach (CustomerProduct product in shoppingList)
             {
-                int curTotal = PriceForCustomerProduct(product);
-                if (curTotal == int.MaxValue)
+                int? curTotal = PriceForCustomerProduct(product);
+                if (curTotal == null)
                     throw new LackOfProductException("Sorry, there is not enough products in this shop");
-                total += curTotal;
+                total += curTotal.Value;
             }
 
             if (total > customer.Money)
                 throw new LackOfMoneyException("Sorry, you don't have enough money to buy it");
-            customer.Money -= total;
+            customer.Money -= total.Value;
             RemoveProductsFromShop(shoppingList);
         }
 
@@ -86,7 +93,7 @@ namespace Shops.Entities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return ShopName == other.ShopName && ShopId.Equals(other.ShopId) && Equals(ShopProducts, other.ShopProducts);
+            return ShopName == other.ShopName && ShopId.Equals(other.ShopId) && Equals(_shopProducts, other._shopProducts);
         }
 
         public override bool Equals(object obj)
@@ -99,30 +106,25 @@ namespace Shops.Entities
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ShopName, ShopId, ShopProducts);
+            return HashCode.Combine(ShopName, ShopId, _shopProducts);
         }
 
         public ShopProduct FindShopProductInList(ShopProduct product)
         {
-            ShopProduct curProduct = ShopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product.ProductOfShop));
-            if (curProduct == null)
-                throw new NoProductException("There is no such product");
+            ShopProduct curProduct =
+                _shopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product.ProductOfShop));
             return curProduct;
         }
 
         public ShopProduct FindShopProductInList(CustomerProduct product)
         {
-            ShopProduct curProduct = ShopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product.ProductOfCustomer));
-            if (curProduct == null)
-                throw new NoProductException("There is no such product");
+            ShopProduct curProduct = _shopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product.ProductOfCustomer));
             return curProduct;
         }
 
         public ShopProduct FindShopProductInList(Product product)
         {
-            ShopProduct curProduct = ShopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product));
-            if (curProduct == null)
-                throw new NoProductException("There is no such product");
+            ShopProduct curProduct = _shopProducts.FirstOrDefault(newProduct => newProduct.ProductOfShop.Equals(product));
             return curProduct;
         }
 
@@ -131,7 +133,7 @@ namespace Shops.Entities
             ShopProduct product = FindShopProductInList(customerProduct);
             if (product.ShopProductAmount == customerProduct.CustomerProductAmount)
             {
-                ShopProducts.Remove(product);
+                _shopProducts.Remove(product);
             }
             else if (product.ShopProductAmount > customerProduct.CustomerProductAmount)
             {

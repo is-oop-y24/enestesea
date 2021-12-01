@@ -1,0 +1,16 @@
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.exe
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.deps.json
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.runtimeconfig.json
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.runtimeconfig.dev.json
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.dll
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\ref\Isu.dll
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\bin\Debug\net5.0\Isu.pdb
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.csproj.AssemblyReference.cache
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.AssemblyInfoInputs.cache
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.AssemblyInfo.cs
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.csproj.CoreCompileInputs.cache
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.dll
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\ref\Isu.dll
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.pdb
+C:\Users\Настя\RiderProjects\enestesea\lab2\Isu\obj\Debug\net5.0\Isu.genruntimeconfig.cache

@@ -22,5 +22,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
+ <ItemGroup>
+    <EmbeddedResource Remove="Services.resx" />
+  </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services.Designer.cs" />
+  </ItemGroup>
+  
 </Project>

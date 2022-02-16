@@ -15,6 +15,6 @@ namespace Shops.Services
         void BuyAllList(List<CustomerProduct> shoppingList, Shop shop, Customer customer);
         List<ShopProduct> AllProducts(Shop shop);
         void Delivery(Shop shop, List<ShopProduct> products);
-        Shop FindShopWithBestPrice(List<CustomerProduct> listOfPruducts);
+        Shop FindShopWithBestPrice(List<CustomerProduct> listOfProducts);
     }
 }

@@ -1,28 +1,30 @@
 using System.Collections.Generic;
 using Backups.Tools;
-namespace Backups.Classes;
 
-public class Storage
+namespace Backups.Classes
 {
-    private readonly string _name;
-    private readonly List<JobObject> _jobObjects;
-
-    public Storage(string name)
+    public class Storage
     {
-        _name = name;
-        _jobObjects = new List<JobObject>();
-    }
+        private readonly string _name;
+        private readonly List<JobObject> _jobObjects;
 
-    public List<JobObject> JobObjects => _jobObjects;
-    public string Name => _name;
-
-    public void AddJobObject(JobObject jobObject)
-    {
-        if (jobObject == null)
+        public Storage(string name)
         {
-            throw new NullException("jobObject is invalid");
+            _name = name;
+            _jobObjects = new List<JobObject>();
         }
 
-        _jobObjects.Add(jobObject);
+        public List<JobObject> JobObjects => _jobObjects;
+        public string Name => _name;
+
+        public void AddJobObject(JobObject jobObject)
+        {
+            if (jobObject == null)
+            {
+                throw new NullException("jobObject is invalid");
+            }
+
+            _jobObjects.Add(jobObject);
+        }
     }
 }

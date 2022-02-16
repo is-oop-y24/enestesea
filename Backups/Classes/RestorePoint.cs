@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using Backups.Tools;
 
-namespace Backups.Classes;
-
-public class RestorePoint
+namespace Backups.Classes
 {
-    private readonly List<Storage> _storages;
-    private readonly DateTime _dateTime;
-
-    public RestorePoint(DateTime dateTime)
+    public class RestorePoint
     {
-        _storages = new List<Storage>();
-        _dateTime = dateTime;
-    }
+        private readonly List<Storage> _storages;
+        private readonly DateTime _dateTime;
 
-    public List<Storage> ListStorages => _storages.ToList();
-
-    public void AddStorage(Storage storage)
-    {
-        if (storage != null)
+        public RestorePoint(DateTime dateTime)
         {
-            _storages.Add(storage);
+            _storages = new List<Storage>();
+            _dateTime = dateTime;
         }
-        else
-        {
-            throw new NullException("Storage is invalid");
-        }
-    }
 
-    public void AddStorages(List<Storage> storages)
-    {
-        _storages.AddRange(storages);
+        public List<Storage> ListStorages => _storages.ToList();
+
+        public void AddStorage(Storage storage)
+        {
+            if (storage != null)
+            {
+                _storages.Add(storage);
+            }
+            else
+            {
+                throw new NullException("Storage is invalid");
+            }
+        }
+
+        public void AddStorages(List<Storage> storages)
+        {
+            _storages.AddRange(storages);
+        }
     }
 }

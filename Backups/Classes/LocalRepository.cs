@@ -3,50 +3,55 @@ using System.IO;
 using System.IO.Compression;
 using Backups.Services;
 using Backups.Tools;
-namespace Backups.Classes;
 
-public class LocalRepository : IRepository
+namespace Backups.Classes
 {
-    private readonly string _path;
-    public LocalRepository(string path)
+    public class LocalRepository : IRepository
     {
-        _path = path;
-    }
+        private readonly string _path;
 
-    public List<Storage> SaveRestorePoint(List<JobObject> jobObjects, IWayOfStorage wayOfStorage)
-    {
-        if (wayOfStorage == null)
+        public LocalRepository(string path)
         {
-            throw new NullException("way of storage is invalid");
+            _path = path;
         }
 
-        string numberOfRestorePoint = NumberOfRestorePoint().ToString();
-        List<Storage> storages = wayOfStorage.CreateStorage(jobObjects, numberOfRestorePoint);
-        DirectoryInfo directoryOfRestorePoint =
-            Directory.CreateDirectory(_path + @"/RestorePoint_" + numberOfRestorePoint);
-        foreach (Storage storage in storages)
+        public List<Storage> SaveRestorePoint(List<JobObject> jobObjects, IWayOfStorage wayOfStorage)
         {
-            Directory.CreateDirectory(@"C:/BackupDirectory");
-            foreach (JobObject jobObject in storage.JobObjects)
+            if (wayOfStorage == null)
             {
-                File.Copy(jobObject.FileInfo.FullName, @"C:/BackupDirectory/" + jobObject.FileInfo.Name);
+                throw new NullException("way of storage is invalid");
             }
 
-            ZipFile.CreateFromDirectory(@"C:/BackupDirectory", directoryOfRestorePoint.FullName + $@"/{storage.Name}.zip");
-            Directory.Delete(@"C:/BackupDirectory", true);
+            string numberOfRestorePoint = NumberOfRestorePoint().ToString();
+            List<Storage> storages = wayOfStorage.CreateStorage(jobObjects, numberOfRestorePoint);
+            DirectoryInfo directoryOfRestorePoint =
+                Directory.CreateDirectory(_path + @"/RestorePoint_" + numberOfRestorePoint);
+            foreach (Storage storage in storages)
+            {
+                Directory.CreateDirectory(@"C:/BackupDirectory");
+                foreach (JobObject jobObject in storage.JobObjects)
+                {
+                    File.Copy(jobObject.FileInfo.FullName, @"C:/BackupDirectory/" + jobObject.FileInfo.Name);
+                }
+
+                ZipFile.CreateFromDirectory(
+                    @"C:/BackupDirectory",
+                    directoryOfRestorePoint.FullName + $@"/{storage.Name}.zip");
+                Directory.Delete(@"C:/BackupDirectory", true);
+            }
+
+            return storages;
         }
 
-        return storages;
-    }
-
-    private static int NumberOfRestorePoint()
-    {
-        int number = 1;
-        while (Directory.Exists($@"C:/BackupsDirectory/RestorePoint_{number.ToString()}"))
+        private static int NumberOfRestorePoint()
         {
-            number++;
-        }
+            int number = 1;
+            while (Directory.Exists($@"C:/BackupsDirectory/RestorePoint_{number.ToString()}"))
+            {
+                number++;
+            }
 
-        return number;
+            return number;
+        }
     }
 }

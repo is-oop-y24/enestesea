@@ -8,10 +8,10 @@ namespace Backups.Classes
 {
     public class BackupsJob
     {
-        private readonly List<JobObject> _jobObjects;
         private readonly List<RestorePoint> _restorePoints;
         private readonly List<IRepository> _repositories;
         private readonly IWayOfStorage _wayOfStorage;
+        private List<JobObject> _jobObjects;
 
         public BackupsJob(List<IRepository> repositories, IWayOfStorage wayOfStorage)
         {
@@ -45,7 +45,12 @@ namespace Backups.Classes
                 throw new NullException("Path is invalid");
             }
 
-            JobObject jobObject = _jobObjects.FirstOrDefault(jobObject => jobObject.FileInfo.FullName == path);
+            JobObject jobObject = _jobObjects.FirstOrDefault(j => j.FileInfo.FullName.Equals(path));
+            foreach (JobObject j in _jobObjects)
+            {
+                Console.WriteLine(j.FileInfo.FullName);
+            }
+
             _jobObjects.Remove(jobObject);
         }
 

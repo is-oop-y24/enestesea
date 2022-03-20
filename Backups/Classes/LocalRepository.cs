@@ -28,16 +28,16 @@ namespace Backups.Classes
                 Directory.CreateDirectory(_path + @"/RestorePoint_" + numberOfRestorePoint);
             foreach (Storage storage in storages)
             {
-                Directory.CreateDirectory(@"C:/BackupDirectory");
+                Directory.CreateDirectory(@"C:/NewFolder");
                 foreach (JobObject jobObject in storage.JobObjects)
                 {
-                    File.Copy(jobObject.FileInfo.FullName, @"C:/BackupDirectory/" + jobObject.FileInfo.Name);
+                    File.Copy(jobObject.FileInfo.FullName, @"C:/NewFolder/" + jobObject.FileInfo.Name, true);
                 }
 
                 ZipFile.CreateFromDirectory(
-                    @"C:/BackupDirectory",
+                    @"C:/NewFolder",
                     directoryOfRestorePoint.FullName + $@"/{storage.Name}.zip");
-                Directory.Delete(@"C:/BackupDirectory", true);
+                Directory.Delete(@"C:/NewFolder", true);
             }
 
             return storages;
@@ -46,7 +46,7 @@ namespace Backups.Classes
         private static int NumberOfRestorePoint()
         {
             int number = 1;
-            while (Directory.Exists($@"C:/BackupsDirectory/RestorePoint_{number.ToString()}"))
+            while (Directory.Exists($@"C:/BackupDirectory/RestorePoint_{number.ToString()}"))
             {
                 number++;
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Text;
 using Backups.Classes;
@@ -31,11 +30,11 @@ namespace Backups
                 fileStream.Write(information, 0, information.Length);
             }
 
-            backupJob.AddJobObject(@"C:/BackupDirectory/File1.docx");
+            var j = backupJob.AddJobObject(@"C:/BackupDirectory/File1.docx");
             backupJob.AddJobObject(@"C:/BackupDirectory/File2.docx");
             backupJob.CreateRestorePoint();
             Console.WriteLine(backupJob.JobObjectsNumber);
-            backupJob.DeleteJobObjectByPath(@"C:/BackupDirectory/File1.docx");
+            backupJob.DeleteJobObject(j);
             backupJob.CreateRestorePoint();
             Console.WriteLine(backupJob.JobObjectsNumber);
             Console.WriteLine(backupJob.RestorePointsNumber);
@@ -43,7 +42,7 @@ namespace Backups
             List<IRepository> listOfRepositories2 = new List<IRepository>();
             Directory.CreateDirectory(@"C:/BackupDirectory2");
             IRepository local2 = new LocalRepository(@"C:/BackupDirectory2");
-            listOfRepositories.Add(local2);
+            listOfRepositories2.Add(local2);
             BackupsJob backupJob2 = new BackupsJob(listOfRepositories2, wayOfStorage2);
             using (FileStream fileStream = File.Create(@"C:/BackupDirectory2/File1.docx"))
             {

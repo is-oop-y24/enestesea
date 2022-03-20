@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "3ACuYfrygFdJYyBBoj2nTRown6WXG3VPrrCQygWeZRjHitikpg4GVCWqQNlqquK3HvWzyBHycVHojuHHcDiKJA==",
+  "success": true,
+  "projectFilePath": "/Users/nastiass/RiderProjects/enestesea/BackupsExtra/BackupsExtra.csproj",
+  "expectedPackageFiles": [
+    "/Users/nastiass/.nuget/packages/stylecop.analyzers/1.1.118/stylecop.analyzers.1.1.118.nupkg.sha512",
+    "/Users/nastiass/.nuget/packages/microsoft.netcore.app.ref/5.0.0/microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
+    "/Users/nastiass/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0/microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "/Users/nastiass/.nuget/packages/microsoft.netcore.app.host.osx-x64/5.0.14/microsoft.netcore.app.host.osx-x64.5.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

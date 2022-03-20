@@ -1,0 +1,16 @@
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups.deps.json
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups.runtimeconfig.json
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups.runtimeconfig.dev.json
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups.dll
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/ref/Backups.dll
+/Users/nastiass/RiderProjects/enestesea/Backups/bin/Debug/net5.0/Backups.pdb
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.csproj.AssemblyReference.cache
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.GeneratedMSBuildEditorConfig.editorconfig
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.AssemblyInfoInputs.cache
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.AssemblyInfo.cs
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.csproj.CoreCompileInputs.cache
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.dll
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/ref/Backups.dll
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.pdb
+/Users/nastiass/RiderProjects/enestesea/Backups/obj/Debug/net5.0/Backups.genruntimeconfig.cache

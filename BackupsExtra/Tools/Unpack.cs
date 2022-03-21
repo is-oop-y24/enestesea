@@ -4,9 +4,9 @@ namespace BackupsExtra.Tools
 {
     public static class Unpack
     {
-        public static void Unpacking(string file, string targeted)
+        public static void Unpacking(string file, string dir)
         {
-            ZipFile.ExtractToDirectory(file, targeted, true);
+            ZipFile.ExtractToDirectory(file, dir, true);
         }
     }
 }

@@ -16,6 +16,17 @@ namespace BackupsExtra.Classes
             _path = path;
         }
 
+        public static int NewNumber()
+        {
+            int number = 1;
+            while (Directory.Exists($@"C:/BackupDirectory/RestorePoint_{number.ToString()}"))
+            {
+                number++;
+            }
+
+            return number;
+        }
+
         public List<Storage> SaveRestorePoint(List<JobObject> jobObjects, IWayOfStorage wayOfStorage)
         {
             if (wayOfStorage == null)
@@ -29,14 +40,14 @@ namespace BackupsExtra.Classes
                 Directory.CreateDirectory(_path + @"/RestorePoint_" + numberOfRestorePoint);
             foreach (Storage storage in storages)
             {
-                Directory.CreateDirectory(@"C:/BackupDirectory");
+                Directory.CreateDirectory(@"C:/NewFolder");
                 foreach (JobObject jobObject in storage.JobObjects)
                 {
-                    File.Copy(jobObject.FileInfo.FullName, @"C:/BackupDirectory/" + jobObject.FileInfo.Name);
+                    File.Copy(jobObject.FileInfo.FullName, @"C:/NewFolder/" + jobObject.FileInfo.Name);
                 }
 
-                ZipFile.CreateFromDirectory(@"C:/BackupDirectory", directoryOfRestorePoint.FullName + $@"/{storage.Name}.zip");
-                Directory.Delete(@"C:/BackupDirectory", true);
+                ZipFile.CreateFromDirectory(@"C:/NewFolder", directoryOfRestorePoint.FullName + $@"/{storage.Name}.zip");
+                Directory.Delete(@"C:/NewFolder", true);
             }
 
             return storages;
@@ -57,11 +68,13 @@ namespace BackupsExtra.Classes
 
         public void Restore(RestorePoint restorePoint, string path)
         {
-            foreach (Storage storage in from storage in restorePoint.ListStorages from jobObject in storage.JobObjects select storage)
+            foreach (Storage storage in restorePoint.ListStorages)
             {
-                Unpack.Unpacking(
-                    _path + "/RestorePoint_" + restorePoint.Number + "/" + storage.Name + ".zip",
-                    storage.JobObjects.FileInfo.DirectoryName);
+                foreach (JobObject jobObject in storage.JobObjects)
+                {
+                    Unpack.Unpacking(
+                        _path + "/RestorePoint_" + restorePoint.Number + "/" + storage.Name + ".zip", path);
+                }
             }
         }
 
@@ -90,17 +103,6 @@ namespace BackupsExtra.Classes
             }
 
             Directory.Delete(@"C:/BackupsMerge", true);
-        }
-
-        public static int NewNumber()
-        {
-            int number = 1;
-            while (Directory.Exists($@"C:/BackupsDirectory/RestorePoint_{number.ToString()}"))
-            {
-                number++;
-            }
-
-            return number;
         }
     }
 }

@@ -14,9 +14,9 @@ namespace BackupsExtra.Tools
         {
             if (string.IsNullOrEmpty(nameOfFile)) throw new BackupsExtraException("Invalid name of file");
             string subString = $"_{number}";
-            string[] subStrings = nameOfFile.Split('_');
+            string[] subStrings = nameOfFile.Split('.');
 
-            return subString.First() + subString;
+            return subStrings.First() + subString;
         }
     }
 }

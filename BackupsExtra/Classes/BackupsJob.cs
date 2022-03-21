@@ -30,6 +30,8 @@ namespace BackupsExtra.Classes
              _mergeCheck = mergeCheck;
         }
 
+        public int JobObjectsNumber => _jobObjects.Count;
+        public int RestorePointsNumber => _restorePoints.Count + 1;
         public JobObject AddJobObject(string path)
         {
             if (path == null)
@@ -79,17 +81,38 @@ namespace BackupsExtra.Classes
 
         public RestorePoint CreateRestorePoint()
         {
-            SplitStorage split = new SplitStorage();
-            List<Storage> storages = new List<Storage>();
-            RestorePoint restorePoint =
-                new RestorePoint(DateTime.Now, _restorePoints.Count, split, storages);
-            foreach (IRepository repository in _repositories)
+            List<RestorePoint> extractPointsList = _cleanAlgorithm.Selection(_restorePoints);
+            if (_mergeCheck)
             {
-                storages = repository.SaveRestorePoint(_jobObjects, _wayOfStorage);
+                foreach (RestorePoint r in extractPointsList)
+                {
+                    Merge(r, _restorePoints[^1]);
+                }
+            }
+            else
+            {
+                foreach (RestorePoint rp in extractPointsList)
+                {
+                    DeleteRestorePoint(rp);
+                }
             }
 
-            restorePoint.ListStorages.AddRange(storages);
+            if (_repositories.Count == 0) throw new BackupsExtraException("You must create repo first");
+            int number = RestorePointsNumber;
+            var storages = new List<Storage>();
+            foreach (IRepository r in _repositories)
+            {
+                storages = r.SaveRestorePoint(_jobObjects, _wayOfStorage);
+            }
+
+            var restorePoint = new RestorePoint(DateTime.Now, number, _wayOfStorage, storages);
             _restorePoints.Add(restorePoint);
+
+            foreach (ILogger l in _loggers)
+            {
+                l.Log($"Created new {restorePoint}");
+            }
+
             return restorePoint;
         }
 
